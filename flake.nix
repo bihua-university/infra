@@ -44,7 +44,7 @@
         ./hosts-module.nix
         ./hosts.nix
         ./tests.nix
-        ./devshell.nix
+        ./dev.nix
         ./formatter.nix
       ];
 

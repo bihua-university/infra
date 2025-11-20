@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   ...
 }:
 
@@ -19,6 +20,12 @@
           sops
           deploy-rs
         ];
+      };
+      apps = {
+        deploy = {
+          type = "app";
+          program = lib.getExe pkgs.deploy-rs;
+        };
       };
     };
 }
