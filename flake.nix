@@ -38,6 +38,8 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         inputs.flake-parts.flakeModules.easyOverlay
+        ./hosts-module.nix
+        ./hosts.nix
       ];
 
       perSystem =
