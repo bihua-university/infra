@@ -73,10 +73,11 @@ let
     _name: nixosConfiguration:
     let
       hostname = nixosConfiguration.config.networking.hostName;
+      suffix = lib.optionalString (cfg.tsnet != null) ".${cfg.tsnet}";
       inherit (nixosConfiguration.config.nixpkgs.hostPlatform) system;
     in
     {
-      inherit hostname;
+      hostname = "${hostname}${suffix}";
       profiles.system = {
         user = "root";
         sshUser = "root";
@@ -91,6 +92,10 @@ in
     hosts = lib.mkOption {
       type = lib.types.attrsOf hostModule;
       default = { };
+    };
+    tsnet = lib.mkOption {
+      type = with lib.types; nullOr str;
+      default = null;
     };
     share-module = lib.mkOption {
       type = with lib.types; nullOr path;

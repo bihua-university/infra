@@ -1,5 +1,6 @@
 {
   infra = {
+    tsnet = "elk-agama.ts.net";
     hosts = {
       cosimo = {
         system = "x86_64-linux";
