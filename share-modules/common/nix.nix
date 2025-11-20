@@ -45,7 +45,9 @@ in
       ];
       nix-path = lib.mkForce "nixpkgs=${inputs.nixpkgs}";
       use-xdg-base-directories = true;
-      trusted-public-keys = [ ];
+      trusted-public-keys = [
+        "dorothy-store:Q3z08JESCFxgu3HdOhze+Gp+uwo+JiqfJHCpmzT6Zgc="
+      ];
       builders-use-substitutes = true;
       trusted-users = [
         "root"
