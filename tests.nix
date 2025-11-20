@@ -7,7 +7,7 @@
 }:
 
 let
-  mkOverlay =
+  mkSpecialArgs =
     inputs':
     let
       inherit (config.flake) overlays legacyNixosModules;
@@ -43,7 +43,7 @@ in
               ]);
             services.timesyncd.enable = lib.mkForce true;
           };
-        node.specialArgs = mkOverlay inputs';
+        node.specialArgs = mkSpecialArgs inputs';
         testScript = # python
           ''
             machine.start()
