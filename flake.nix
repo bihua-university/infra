@@ -41,6 +41,7 @@
         ./hosts-module.nix
         ./hosts.nix
         ./tests.nix
+        ./devshell.nix
       ];
 
       perSystem =
