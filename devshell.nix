@@ -4,10 +4,10 @@
 }:
 
 {
-  imports = [ (inputs.devshell.flakeModule) ];
+  imports = [ inputs.devshell.flakeModule ];
 
   perSystem =
-    { pkgs, config, ... }:
+    { pkgs, ... }:
     {
       devshells.default = {
         name = "NixConsole";

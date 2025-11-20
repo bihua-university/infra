@@ -70,7 +70,7 @@ let
 
   deployLib = inputs.deploy-rs.lib;
   mkNode =
-    name: nixosConfiguration:
+    _name: nixosConfiguration:
     let
       hostname = nixosConfiguration.config.networking.hostName;
       inherit (nixosConfiguration.config.nixpkgs.hostPlatform) system;
