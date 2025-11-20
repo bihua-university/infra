@@ -40,6 +40,7 @@
         inputs.flake-parts.flakeModules.easyOverlay
         ./hosts-module.nix
         ./hosts.nix
+        ./tests.nix
       ];
 
       perSystem =
