@@ -14,6 +14,10 @@
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,6 +46,7 @@
         ./hosts.nix
         ./tests.nix
         ./devshell.nix
+        ./formatter.nix
       ];
 
       perSystem =
