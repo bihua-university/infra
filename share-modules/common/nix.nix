@@ -47,6 +47,7 @@ in
       use-xdg-base-directories = true;
       trusted-public-keys = [
         "dorothy-store:Q3z08JESCFxgu3HdOhze+Gp+uwo+JiqfJHCpmzT6Zgc="
+        "bhu-cicd-store:WQEOln4Zu8AbJY3KxbbQRRhzNKVaAn8KeAQxnLAiyyM="
       ];
       builders-use-substitutes = true;
       trusted-users = [

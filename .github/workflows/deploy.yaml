@@ -13,6 +13,9 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      NIX_SIGN_PRIVATE_KEY_FILE: /tmp/secret-key-priv.pem
+
     steps:
     - name: Tailscale
       uses: tailscale/github-action@v4
@@ -22,8 +25,18 @@ jobs:
         tags: tag:bhu-cicd
         ping: cosimo.elk-agama.ts.net,sheepro.elk-agama.ts.net
 
+    - name: Create Nix signing key file
+      run: |
+        cat >"$NIX_SIGN_PRIVATE_KEY_FILE" <<'EOF'
+        ${{ secrets.NIX_SIGN_PRIVATE_KEY }}
+        EOF
+
     - name: Install Nix
-      uses: nixbuild/nix-quick-install-action@v30
+      uses: nixbuild/nix-quick-install-action@v34
+      with:
+        nix_conf: |
+          experimental-features = nix-command flakes
+          secret-key-files = ${{ env.NIX_SIGN_PRIVATE_KEY_FILE }}
 
     - uses: nix-community/cache-nix-action@v6
       with:
