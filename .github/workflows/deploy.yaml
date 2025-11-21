@@ -37,6 +37,7 @@ jobs:
         nix_conf: |
           experimental-features = nix-command flakes
           secret-key-files = ${{ env.NIX_SIGN_PRIVATE_KEY_FILE }}
+          download-buffer-size = 134217728
 
     - uses: nix-community/cache-nix-action@v6
       with:
