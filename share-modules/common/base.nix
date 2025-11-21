@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   time.timeZone = "Asia/Shanghai";
@@ -20,28 +20,32 @@
   };
   users.groups.deploy = { };
 
-  security.sudo-rs = {
+  # NOTE: from sudo-rs SUDOERS(5)
+  # Wildcards in command line arguments are not supported—using these in original versions of sudo was usually a sign
+  # of mis-configuration and consequently sudo-rs simply forbids using them.
+  security.sudo = {
     enable = true;
-    execWheelOnly = false;
+    execWheelOnly = true;
     wheelNeedsPassword = true;
-    extraRules = [
-      {
-        users = [ "deploy" ];
-        commands = [
-          {
-            command = "/run/current-system/bin/switch-to-configuration";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-      }
-    ];
-    extraConfig = ''
-      # Deploy user passwordless sudo for deploy-rs commands
-      deploy ALL=(ALL) NOPASSWD: /nix/var/nix/profiles/system/bin/activate-rs activate *
-      deploy ALL=(ALL) NOPASSWD: /nix/var/nix/profiles/system/bin/activate-rs wait *
-      deploy ALL=(ALL) NOPASSWD: /nix/store/*/bin/activate-rs activate *
-      deploy ALL=(ALL) NOPASSWD: /nix/store/*/bin/activate-rs wait *
-      deploy ALL=(ALL) NOPASSWD: /run/current-system/sw/bin/rm /tmp/deploy-rs*
-    '';
+    # Deploy user passwordless sudo for deploy-rs commands
+    extraRules =
+      let
+        mkDeployRule = command: {
+          users = [ "deploy" ];
+          runAs = "root";
+          commands = [
+            {
+              inherit command;
+              options = [ "NOPASSWD" ];
+            }
+          ];
+        };
+      in
+      [
+        (mkDeployRule "/run/current-system/bin/switch-to-configuration")
+        (mkDeployRule "/nix/store/*/activate-rs activate *")
+        (mkDeployRule "/nix/store/*/activate-rs wait *")
+        (mkDeployRule "/run/current-system/sw/bin/rm /tmp/deploy-rs*")
+      ];
   };
 }
