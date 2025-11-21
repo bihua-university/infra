@@ -4,9 +4,5 @@
 }:
 
 {
-  imports = with modules.snippets.cloud; [
-    user
-    ssh
-    optimization
-  ];
+  imports = builtins.attrValues modules.snippets.cloud;
 }
