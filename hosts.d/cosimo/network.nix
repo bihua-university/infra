@@ -22,7 +22,7 @@ in
     openFirewall = true; # default port: 41641
     useRoutingFeatures = "server";
     extraSetFlags = [
-      "--webclient"
+      "--ssh"
       "--relay-server-port=40004"
     ];
     authKeyFile = secrets.tailscaleAuthKey.path;
