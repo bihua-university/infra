@@ -7,23 +7,17 @@
 }:
 
 let
-  mkSpecialArgs =
-    inputs':
-    let
-      inherit (config.flake) overlays legacyNixosModules;
-    in
-    {
-      flake = {
-        inherit
-          self
-          inputs
-          inputs'
-          overlays
-          ;
-        inherit config;
-      };
-      modules = legacyNixosModules;
+  mkSpecialArgs = inputs': {
+    flake = {
+      inherit
+        self
+        inputs
+        inputs'
+        ;
+      inherit config;
     };
+    modules = config.flake.legacyNixosModules;
+  };
 in
 {
 
@@ -42,7 +36,9 @@ in
                 cloud.ssh
               ]);
             services.timesyncd.enable = lib.mkForce true;
+            nixpkgs.overlays = config.infra.overlays;
           };
+        node.pkgsReadOnly = false;
         node.specialArgs = mkSpecialArgs inputs';
         testScript = # python
           ''

@@ -28,7 +28,7 @@ let
     (withSystem system (
       { inputs', ... }:
       let
-        inherit (toplevel.config.flake) overlays legacyNixosModules;
+        inherit (toplevel.config.flake) legacyNixosModules;
       in
       inputs.nixpkgs.lib.nixosSystem {
         specialArgs = {
@@ -37,7 +37,6 @@ let
               self
               inputs
               inputs'
-              overlays
               ;
             inherit (toplevel) config;
           };
@@ -57,10 +56,7 @@ let
             {
               nixpkgs = {
                 hostPlatform = system;
-                overlays = [
-                  overlays.default
-                  inputs.deploy-rs.overlays.default
-                ];
+                inherit (cfg) overlays;
               };
               networking.hostName = lib.mkForce hostname;
             }
@@ -100,6 +96,13 @@ in
     share-module = lib.mkOption {
       type = with lib.types; nullOr path;
       default = null;
+    };
+    overlays = lib.mkOption {
+      type = with lib.types; listOf (functionTo (functionTo attrs));
+      default = [
+        toplevel.config.flake.overlays.default
+        inputs.deploy-rs.overlays.default
+      ];
     };
   };
 
