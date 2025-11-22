@@ -17,7 +17,7 @@ in
   };
 
   services.caddy.virtualHosts = lib.mkIf cfg.enable {
-    "chat.bhu.social".extraConfig = ''
+    "analytics.bhu.social".extraConfig = ''
       import tsnet
       reverse_proxy http://${cfg.address}:${toString cfg.port} {
         header_down X-Real-IP {http.request.remote}
