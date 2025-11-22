@@ -39,6 +39,12 @@ jobs:
           secret-key-files = ${{ env.NIX_SIGN_PRIVATE_KEY_FILE }}
           download-buffer-size = 134217728
 
+    - name: Setup cachix
+      uses: cachix/cachix-action@v16
+      with:
+        name: bihua-university
+        authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+
     - uses: nix-community/cache-nix-action@v6
       with:
         # restore and save a cache using this key
