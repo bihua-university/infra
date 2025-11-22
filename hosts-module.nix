@@ -125,7 +125,8 @@ in
 
     # deploy-rs
     flake.deploy = {
-      fastConnection = true;
+      # NOTE: sheepro tailscale via derp is very slow...
+      fastConnection = false;
       nodes = mapAttrs mkNode toplevel.config.flake.nixosConfigurations;
     };
   };
