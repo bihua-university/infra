@@ -37,6 +37,10 @@ in
   };
 
   topology.self = lib.mkIf cfg.enable {
-    services.searxng.info = "search.bhu.social";
+    services.searxng = {
+      info = "search.bhu.social";
+      # no need to show listen address
+      details = lib.mkForce { };
+    };
   };
 }
