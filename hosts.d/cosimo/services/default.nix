@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  flake,
   ...
 }:
 
@@ -13,7 +14,7 @@ in
 {
   sops.secrets = lib.mkIf cfg.caddy.enable {
     caddy = {
-      sopsFile = ./secrets/caddy.env;
+      sopsFile = flake.commonSecrets + /caddy.env;
       format = "dotenv";
     };
   };

@@ -36,6 +36,8 @@ let
               inputs'
               ;
             inherit (toplevel) config;
+            projectRoot = ./.;
+            commonSecrets = ./secrets;
           };
           modules = toplevel.config.flake.legacyNixosModules;
         };

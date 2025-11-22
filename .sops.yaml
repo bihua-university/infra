@@ -5,6 +5,12 @@ keys:
   - &cosimo age1xanc87qd0wk8srg479lz9pac8fwafhy3efm6csgx2kkm3h6jrgvsz4zxgs
   - &sheepro age1g5grzupkm8ch5t0gu6ydjqw4sagmq9vsqyqss66ejrtu98vgyggqv453wh
 creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *dorothy
+      - *cosimo
+      - *sheepro
   # e.g. hosts.d/cosimo/secrets.yaml
   - path_regex: hosts.d/cosimo/secrets(\.\w+)?\.(yaml|json|env|ini)$
     key_groups:
