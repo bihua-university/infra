@@ -30,7 +30,7 @@ in
           { lib, modules, ... }:
           {
             imports =
-              (builtins.attrValues modules.common)
+              config.infra.load-modules
               ++ (with modules.snippets; [
                 cloud.user
                 cloud.ssh

@@ -27,9 +27,6 @@ let
     { system, directory }:
     (withSystem system (
       { inputs', ... }:
-      let
-        inherit (toplevel.config.flake) legacyNixosModules;
-      in
       inputs.nixpkgs.lib.nixosSystem {
         specialArgs = {
           flake = {
@@ -40,27 +37,25 @@ let
               ;
             inherit (toplevel) config;
           };
-          modules = legacyNixosModules;
+          modules = toplevel.config.flake.legacyNixosModules;
         };
-        modules =
-          # import common module for all NixOS
-          (builtins.attrValues legacyNixosModules.common) ++ [
-            {
-              imports = lib.collect (v: !(lib.isAttrs v)) (
-                lib.packagesFromDirectoryRecursive {
-                  callPackage = path: _: path;
-                  inherit directory;
-                }
-              );
-            }
-            {
-              nixpkgs = {
-                hostPlatform = system;
-                inherit (cfg) overlays;
-              };
-              networking.hostName = lib.mkForce hostname;
-            }
-          ];
+        modules = cfg.load-modules ++ [
+          {
+            imports = lib.collect (v: !(lib.isAttrs v)) (
+              lib.packagesFromDirectoryRecursive {
+                callPackage = path: _: path;
+                inherit directory;
+              }
+            );
+          }
+          {
+            nixpkgs = {
+              hostPlatform = system;
+              inherit (cfg) overlays;
+            };
+            networking.hostName = lib.mkForce hostname;
+          }
+        ];
       }
     ));
 
@@ -97,11 +92,20 @@ in
       type = with lib.types; nullOr path;
       default = null;
     };
+    load-modules = lib.mkOption {
+      type = with lib.types; listOf deferredModule;
+      default =
+        # import common module for all NixOS
+        (builtins.attrValues toplevel.config.flake.legacyNixosModules.common) ++ [
+          inputs.nix-topology.nixosModules.default
+        ];
+    };
     overlays = lib.mkOption {
       type = with lib.types; listOf (functionTo (functionTo attrs));
       default = [
         toplevel.config.flake.overlays.default
         inputs.deploy-rs.overlays.default
+        inputs.nix-topology.overlays.default
       ];
     };
   };
