@@ -23,6 +23,7 @@
   # NOTE: from sudo-rs SUDOERS(5)
   # Wildcards in command line arguments are not supported—using these in original versions of sudo was usually a sign
   # of mis-configuration and consequently sudo-rs simply forbids using them.
+  # no need to do this acctually...the hosts behind tailscale ACL
   security.sudo = {
     enable = true;
     execWheelOnly = true;
