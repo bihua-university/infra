@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  config,
   ...
 }:
 
@@ -8,7 +9,7 @@
   imports = [ inputs.devshell.flakeModule ];
 
   perSystem =
-    { pkgs, ... }:
+    { pkgs, system, ... }:
     {
       devshells.default = {
         name = "NixConsole";
@@ -16,6 +17,15 @@
           {italic}{99}🦾 Life in Nix 👾{reset}
           $(type -p menu &>/dev/null && menu)
         '';
+        commands = [
+          {
+            name = "gentopo";
+            help = "Generate topology svg(s)";
+            command = ''
+              nix build ${config.flake.topology.${system}.config.output}
+            '';
+          }
+        ];
         packages = with pkgs; [
           sops
           deploy-rs
