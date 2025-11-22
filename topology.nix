@@ -19,6 +19,12 @@
             networks.tailscale = {
               name = "Tailscale Net";
               cidrv4 = "100.64.0.0/10";
+              style = {
+                primaryColor = "#f1cf8a";
+                secondaryColor = "#111111";
+                pattern = "dashed";
+              };
+              icon = "interfaces.wireguard";
             };
 
             nodes.cosimo = {
@@ -29,12 +35,16 @@
                   physicalConnections = [
                     (tlib.mkConnection "sheepro" "tailscale0")
                   ];
+                  virtual = true;
                 };
               };
             };
             nodes.sheepro = {
               interfaces = {
-                tailscale0.network = "tailscale";
+                tailscale0 = {
+                  network = "tailscale";
+                  virtual = true;
+                };
               };
             };
 
