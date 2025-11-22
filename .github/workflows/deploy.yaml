@@ -68,6 +68,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v5
 
+    - name: Pre-build cosimo
+      run: nix build .#nixosConfigurations.cosimo.config.system.build.toplevel
+
+    - name: Pre-build sheepro
+      run: nix build .#nixosConfigurations.sheepro.config.system.build.toplevel
+
     - name: Deploy to targets
       run: nix run .#deploy -- --targets .#sheepro --targets .#cosimo --ssh-user deploy --ssh-opts '-oStrictHostKeyChecking=no'
 
