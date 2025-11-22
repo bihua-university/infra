@@ -144,4 +144,15 @@ in
       }
     '';
   };
+
+  topology.self = {
+    services.librechat = {
+      name = "LibreChat";
+      info = "chat.bhu.social";
+      icon = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/danny-avila/LibreChat/35319c135459be9580cee97ef7d72e225526592a/client/public/assets/logo.svg";
+        sha256 = "sha256-byLpRkFQIqT7SZ2dpI7qYf6tbmXrRJtT7HjZWw9uT3A=";
+      };
+    };
+  };
 }
