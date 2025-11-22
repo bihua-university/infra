@@ -16,7 +16,7 @@ in
       use_default_settings = true;
 
       server.port = 19002;
-      server.bind_address = "localhost";
+      server.bind_address = config.networking.hostName;
 
       server.secret_key = "dummy";
 
