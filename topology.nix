@@ -37,6 +37,20 @@
                 tailscale0.network = "tailscale";
               };
             };
+
+            nodes.outer-space = {
+              deviceType = "device";
+              services = {
+                livehouse = {
+                  name = "alisten";
+                  info = "livehouse.bhu.social";
+                  icon = pkgs.fetchurl {
+                    url = "https://livehouse.bhu.social/icon-180x180.png";
+                    sha256 = "sha256-9zFpSFsE8kIduTPiODH8cTkLvgfCnQ+eeQxVU21bk08=";
+                  };
+                };
+              };
+            };
           }
         )
       ];
