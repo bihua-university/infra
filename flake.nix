@@ -46,6 +46,7 @@
         ./tests.nix
         ./dev.nix
         ./formatter.nix
+        ./topology.nix
       ];
 
       perSystem =
