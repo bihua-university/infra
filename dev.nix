@@ -1,7 +1,6 @@
 {
   inputs,
   lib,
-  config,
   ...
 }:
 
@@ -22,7 +21,7 @@
             name = "gentopo";
             help = "Generate topology svg(s)";
             command = ''
-              nix build ${config.flake.topology.${system}.config.output}
+              nix build .#topology.${system}.config.output
             '';
           }
         ];
