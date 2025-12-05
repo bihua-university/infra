@@ -57,6 +57,10 @@ jobs:
     # - name: Pre-build sheepro
     #   run: nix build .#nixosConfigurations.sheepro.config.system.build.toplevel
 
-    - name: Deploy to targets
-      run: nix run .#deploy -- --skip-checks --targets .#sheepro --targets .#cosimo --ssh-user deploy --ssh-opts '-oStrictHostKeyChecking=no'
+    - name: Deploy to target sheepro
+      if: false # if GitHub Action has IPv6 address
+      run: nix run .#deploy -- --skip-checks --ssh-user deploy --ssh-opts '-oStrictHostKeyChecking=no' .#sheepro
+
+    - name: Deploy to target cosimo
+      run: nix run .#deploy -- --skip-checks --ssh-user deploy --ssh-opts '-oStrictHostKeyChecking=no' .#cosimo
 
