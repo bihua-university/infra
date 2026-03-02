@@ -11,6 +11,6 @@
         directory = ./hosts.d/sheepro;
       };
     };
-    share-module = ./share-modules;
+    share-module = ./modules;
   };
 }
