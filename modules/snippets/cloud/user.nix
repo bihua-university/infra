@@ -8,7 +8,7 @@
 
   users.users =
     let
-      hashedPassword = "$y$j9T$gXdOLmDCxnjtgvBkx9gQo0$j0LG4JYtPJPMiLhYEXicn6aXVGAn40S.Ehh6hT.PGm1";
+      hashedPassword = "$y$j9T$621h14vfEZnHDa.acfUG7.$5bJQ52EkMpTeiPvJ.ldLCdwAMxpWGF1D4cVLF34n997";
     in
     {
       bhu = {
