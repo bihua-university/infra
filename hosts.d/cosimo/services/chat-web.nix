@@ -19,14 +19,13 @@ in
 
 {
   imports = [
-    modules.services.librechat
     modules.trivial.allowUnfreeList
   ];
 
   services.librechat = {
     inherit enable;
-    port = 19000;
     env = {
+      PORT = 19000;
       ALLOW_REGISTRATION = "true";
       ALLOW_SOCIAL_LOGIN = "false";
       HOST = hostName;
@@ -138,7 +137,7 @@ in
   services.caddy.virtualHosts = lib.mkIf cfg.enable {
     "chat.bhu.social".extraConfig = ''
       import tsnet
-      reverse_proxy http://${cfg.env.HOST}:${toString cfg.port} {
+      reverse_proxy http://${cfg.env.HOST}:${toString cfg.env.PORT} {
         header_down X-Real-IP {http.request.remote}
         header_down X-Forwarded-For {http.request.remote}
       }
