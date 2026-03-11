@@ -31,6 +31,19 @@
       url = "github:oddlama/nix-topology";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    zeroclaw = {
+      url = "github:alt-jinser/zeroclaw/sane";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    quasique = {
+      url = "github:jetjinser/quasique/update";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
   };
 
   outputs =
