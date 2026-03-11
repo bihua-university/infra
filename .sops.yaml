@@ -2,7 +2,7 @@ keys:
   # admin
   - &dorothy age1p3e9qvz8ykl0wz6rq2h5vxawyv2t93629c259qgstnmwdzrl95fshuplqk
   # cloud user
-  - &cosimo age175ttll5nzvmudtzdztj74ujr7kuqvenx97zdhrp5u4un0ak38fnqxq750l
+  - &cosimo age152c4mz3770dmkglvg77k3ej92d04ym4y5y4luym7h48a6ufu9pgs6n0ynr
   - &sheepro age1g5grzupkm8ch5t0gu6ydjqw4sagmq9vsqyqss66ejrtu98vgyggqv453wh
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
