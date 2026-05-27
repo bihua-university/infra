@@ -21,10 +21,7 @@ in
 
   services.caddy = {
     enable = cfg.caddy.virtualHosts != { };
-    package = pkgs.caddy.withPlugins {
-      plugins = [ "github.com/caddy-dns/cloudflare@v0.2.2" ];
-      hash = "sha256-biQdtiscdmrwP6VUsuXmZrvcdewl+g50kdmab5lhE0s=";
-    };
+    package = pkgs.caddy-with-plugins;
     environmentFile = secrets.caddy.path;
     virtualHosts."(tsnet)".extraConfig = ''
       @blocked not remote_ip 100.64.0.0/10
