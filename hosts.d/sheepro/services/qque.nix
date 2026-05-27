@@ -42,6 +42,7 @@ in
 
   topology.self = lib.mkIf cfg.enable {
     services.napcat = {
+      name = "NapCat";
       info = "qq.bhu.social";
       # no need to show listen address
       details = lib.mkForce { };
