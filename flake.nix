@@ -44,6 +44,12 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
+
+
+    bifrost = {
+      url = "github:maximhq/bifrost";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
