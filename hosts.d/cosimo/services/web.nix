@@ -100,6 +100,9 @@ in
         url = "http://${HTTP_ADDR}:${toString HTTP_PORT}";
         tokenFile = secrets.forgejo-runner-token.path;
         labels = [ "native:host" ];
+        settings.runner.envs = {
+          GIT_CONFIG_PARAMETERS = "'url.http://100.76.29.108:8085/.insteadOf=https://code.estin.space/'";
+        };
         hostPackages = with pkgs; [
           bash
           fish
@@ -112,6 +115,7 @@ in
           gitMinimal
           gnused
 
+          nix
           nodejs
           guile
           python3
