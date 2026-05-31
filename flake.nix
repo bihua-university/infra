@@ -45,7 +45,6 @@
       };
     };
 
-
     bifrost = {
       url = "github:maximhq/bifrost";
       inputs.nixpkgs.follows = "nixpkgs";
