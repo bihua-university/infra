@@ -67,9 +67,9 @@ in
         PROTOCOL = "http";
         DOMAIN = domain;
         ROOT_URL = "https://${domain}";
-        DISABLE_SSH = true;
+        DISABLE_SSH = false;
         START_SSH_SERVER = true;
-        SSH_LISTEN_PORT = 8086;
+        SSH_LISTEN_PORT = 2222;
       };
       service = {
         ENABLE_REVERSE_PROXY_AUTHENTICATION = true;
