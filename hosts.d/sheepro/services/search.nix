@@ -17,13 +17,13 @@ in
       binding_ip = "100.64.83.119";
       port = 9001;
       # There will be a random delay before sending the request to the search engines if true
-      production_use = false;
+      production_use = true;
       # 0 - None
       # 1 - Low
       # 2 - Moderate
       # 3 - High
       # 4 - Aggressive
-      safe_search = 2;
+      safe_search = 0;
       proxy = config.networking.proxy.default;
 
       # unused
