@@ -1,10 +1,14 @@
 {
   pkgs,
+  config,
+  modules,
+  lib,
   ...
 }:
 
 let
   enable = true;
+  inherit (config.sops) secrets;
 
   # hilarious
   # https://github.com/janeczku/calibre-web/issues/2963
@@ -26,15 +30,18 @@ let
     '';
   });
 
+  host = "100.76.29.108";
   domain = "code.estin.space";
 in
 {
+  imports = [ modules.services.oxicloud ];
+
   services.calibre-web = {
     inherit enable;
     package = calibre-web-minimal;
     openFirewall = true;
     listen = {
-      ip = "100.76.29.108";
+      ip = host;
       port = 8083;
     };
     options = {
@@ -52,21 +59,25 @@ in
   services.forgejo = {
     inherit enable;
     settings = {
-      settings.COOKIE_SECURE = true;
+      session.COOKIE_SECURE = true;
       server = {
-        HTTP_ADDR = "100.76.29.108";
+        HTTP_ADDR = host;
         HTTP_PORT = 8085;
         PROTOCOL = "http";
         DOMAIN = domain;
         ROOT_URL = "https://${domain}";
+        DISABLE_SSH = true;
+        START_SSH_SERVER = true;
+        SSH_LISTEN_PORT = 8086;
       };
       service = {
         ENABLE_REVERSE_PROXY_AUTHENTICATION = true;
         ENABLE_REVERSE_PROXY_EMAIL = true;
       };
       security.REVERSE_PROXY_TRUSTED_PROXIES = "127.0.0.0/8,::1/128,100.64.0.0/10";
-      log.LEVEL = "Debug";
-      service.DISABLE_REGISTRATION = true;
+      log.LEVEL = "Warn";
+      service.DISABLE_REGISTRATION = false;
+      "cron.update_checker".ENABLED = false;
     };
     dump = {
       enable = true;
@@ -75,14 +86,44 @@ in
     database.type = "sqlite3";
   };
 
-  # topology.self = {
-  #   services.librechat = {
-  #     name = "LibreChat";
-  #     info = "chat.bhu.social";
-  #     icon = pkgs.fetchurl {
-  #       url = "https://raw.githubusercontent.com/danny-avila/LibreChat/35319c135459be9580cee97ef7d72e225526592a/client/public/assets/logo.svg";
-  #       sha256 = "sha256-byLpRkFQIqT7SZ2dpI7qYf6tbmXrRJtT7HjZWw9uT3A=";
-  #     };
-  #   };
-  # };
+  sops.secrets.forgejo-runner-token = { };
+  services.gitea-actions-runner = {
+    package = pkgs.forgejo-runner;
+    instances.local =
+      let
+        inherit (config.services.forgejo.settings.server) HTTP_ADDR HTTP_PORT;
+      in
+      {
+        enable = true;
+        name = config.networking.hostName;
+        url = "http://${HTTP_ADDR}:${toString HTTP_PORT}";
+        tokenFile = secrets.forgejo-runner-token.path;
+        labels = [ "native:host" ];
+        hostPackages = with pkgs; [
+          bash
+          fish
+          nushell
+          coreutils
+
+          curl
+          gawk
+          wget
+          gitMinimal
+          gnused
+
+          nodejs
+          guile
+          python3
+        ];
+      };
+  };
+
+  services.oxicloud = {
+    enable = true;
+    settings = {
+      port = 8087;
+      inherit host;
+      baseUrl = "https://cloud.estin.space";
+    };
+  };
 }
