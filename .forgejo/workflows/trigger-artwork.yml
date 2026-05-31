@@ -1,0 +1,21 @@
+name: Trigger Artwork on push
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  trigger:
+    runs-on: native
+    steps:
+      - name: Trigger artwork CI via Forgejo API
+        env:
+          ARTWORK_TOKEN: ${{ secrets.CASCADING_PR_TOKEN }}
+          INSTANCE_URL: http://100.76.29.108:8085 # code.estin.space
+        run: |
+          curl -X POST \
+            -H "Authorization: token $ARTWORK_TOKEN" \
+            -H "Accept: application/json" \
+            -H 'Content-Type: application/json' \
+            "$INSTANCE_URL/api/v1/repos/BHU/artwork/actions/workflows/update-svg.yml/dispatches" \
+            -d '{"ref":"master"}'
