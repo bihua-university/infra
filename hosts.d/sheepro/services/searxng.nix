@@ -7,33 +7,31 @@
 let
   enable = true;
 
-  cfg = config.services.searx;
+  cfg = config.services.websurfx;
 in
 {
-  services.searx = {
+  services.websurfx = {
     inherit enable;
+    openFirewall = true;
     settings = {
-      use_default_settings = true;
+      binding_ip = "100.64.83.119";
+      port = 9001;
+      # There will be a random delay before sending the request to the search engines if true
+      production_use = false;
+      # 0 - None
+      # 1 - Low
+      # 2 - Moderate
+      # 3 - High
+      # 4 - Aggressive
+      safe_search = 2;
+      proxy = config.networking.proxy.default;
 
-      server.port = 19002;
-      server.bind_address = config.networking.hostName;
-
-      server.secret_key = "dummy";
-
-      outgoing.proxies = {
-        "all://" = [ config.networking.proxy.default ];
-      };
+      # unused
+      http_cache_expiry_time = 60;
     };
   };
-
-  services.caddy.virtualHosts = lib.mkIf cfg.enable {
-    "search.bhu.social".extraConfig = ''
-      import tsnet
-      reverse_proxy http://${cfg.settings.server.bind_address}:${toString cfg.settings.server.port} {
-        header_down X-Real-IP {http.request.remote}
-        header_down X-Forwarded-For {http.request.remote}
-      }
-    '';
+  services.redis = lib.mkIf cfg.enable {
+    # The nixpkgs build doesn't have the redis-cache feature enabled
   };
 
   topology.self = lib.mkIf cfg.enable {
