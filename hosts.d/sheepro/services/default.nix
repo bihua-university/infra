@@ -20,7 +20,7 @@ in
   };
 
   services.caddy = {
-    enable = cfg.caddy.virtualHosts != { };
+    enable = (builtins.attrNames cfg.caddy.virtualHosts) != [ "(tsnet)" ];
     package = pkgs.caddy-with-plugins;
     environmentFile = secrets.caddy.path;
     virtualHosts."(tsnet)".extraConfig = ''
