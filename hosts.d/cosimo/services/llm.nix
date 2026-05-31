@@ -1,11 +1,14 @@
 {
   flake,
   pkgs,
+  lib,
+  config,
   ...
 }:
 
 let
   enable = true;
+  cfg = config.services.bifrost;
   inherit (flake.inputs) bifrost;
 
   upstream-ui = pkgs.callPackage "${bifrost}/nix/packages/bifrost-ui.nix" {
@@ -45,5 +48,21 @@ in
     logLevel = "info";
     settings = { };
     openFirewall = true;
+  };
+
+  topology.self = lib.mkIf cfg.enable {
+    services.bifrost = {
+      name = "BiFrost";
+      info = "ai.estin.space";
+      icon =
+        pkgs.runCommandLocal "bifrost-icon.png"
+          {
+            buildInputs = [ pkgs.libwebp ];
+          }
+          ''
+            dwebp ${cfg.package.src.outPath}/ui/public/bifrost-icon.webp -o "$out"
+          '';
+      details.description.text = "LLM Gateway";
+    };
   };
 }

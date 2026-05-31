@@ -9,6 +9,7 @@
 let
   enable = true;
   inherit (config.sops) secrets;
+  inherit (config) services;
 
   # hilarious
   # https://github.com/janeczku/calibre-web/issues/2963
@@ -126,4 +127,34 @@ in
       baseUrl = "https://cloud.estin.space";
     };
   };
+
+  topology.self.services = lib.mkMerge [
+    (lib.mkIf services.calibre-web.enable {
+      calibre-web = {
+        name = "Calibre Web";
+        info = "bib.estin.space";
+        icon = pkgs.callPackage ../../../pkgs/optimize-svg.nix {
+          inherit pkgs;
+          src = "${services.calibre-web.package.src}/cps/static/icon.svg";
+        };
+        details.description.text = "Bibliothèque";
+      };
+    })
+    (lib.mkIf services.gitea-actions-runner.instances.local.enable {
+      forgejo-local-runner = {
+        name = "forgejo-local-runner";
+        icon = "${services.gitea-actions-runner.package.src}/act/runner/testdata/actions/node20/node_modules/@actions/github/node_modules/@actions/http-client/actions.png";
+      };
+    })
+    (lib.mkIf services.oxicloud.enable {
+      oxicloud = {
+        name = "Oxicloud";
+        info = "cloud.estin.space";
+        icon = pkgs.callPackage ../../../pkgs/optimize-svg.nix {
+          inherit pkgs;
+          src = "${services.oxicloud.package.src}/static/logo/logo-plain.svg";
+        };
+      };
+    })
+  ];
 }

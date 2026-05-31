@@ -35,10 +35,10 @@ in
   };
 
   topology.self = lib.mkIf cfg.enable {
-    services.searxng = {
-      info = "search.bhu.social";
-      # no need to show listen address
-      details = lib.mkForce { };
+    services.websurfx = {
+      name = "Websurfx";
+      info = "search.estin.space";
+      icon = "${cfg.package}/opt/websurfx/public/favicon/android-chrome-512x512.jpg";
     };
   };
 }
